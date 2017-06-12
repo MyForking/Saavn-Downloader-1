@@ -9,6 +9,11 @@ import base64
 
 from pyDes import *
 
+try:
+    input = raw_input
+except NameError:
+    pass
+
 proxy_ip = ''
 # set http_proxy from environment
 if('http_proxy' in os.environ):
@@ -27,7 +32,7 @@ base_url = 'http://h.saavncdn.com'
 json_decoder = JSONDecoder()
 
 # Key and IV are coded in plaintext in the app when decompiled
-# and its preety insecure to decrypt urls to the mp3 at the client side
+# and its pretty insecure to decrypt urls to the mp3 at the client side
 # these operations should be performed at the server side.
 des_cipher = des(b"38346591", ECB, b"\0\0\0\0\0\0\0\0" , pad=None, padmode=PAD_PKCS5)
 
@@ -37,7 +42,7 @@ input_url = input('Enter the song url:').strip()
 try:
     res = requests.get(input_url, proxies=proxies, headers=headers)
 except Exception as e:
-    print('Error accesssing website error: '+e)
+    print('Error accessing website error: '+e)
     sys.exit()
 
 
