@@ -51,6 +51,8 @@ soup = BeautifulSoup(res.text,"lxml")
 # Encrypted url to the mp3 are stored in the webpage
 songs_json = soup.find_all('div',{'class':'hide song-json'})
 
+linksFile = open('links.html','a+')
+
 for song in songs_json:
     obj = json_decoder.decode(song.text)
     print(obj['album'],'-',obj['title'])
@@ -58,3 +60,4 @@ for song in songs_json:
     dec_url = des_cipher.decrypt(enc_url,padmode=PAD_PKCS5).decode('utf-8')
     dec_url = base_url + dec_url.replace('mp3:audios','') + '.mp3'
     print(dec_url,'\n')
+    linksFile.write("<a href=\"" + dec_url + "\">" + obj['title'] + "<a> <br>")
