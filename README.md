@@ -33,15 +33,16 @@ Prerequisite
 ====
 You need Python and BeautifulSoup4 installed for the script to work.
 
-I used python3 but you can use python2, just make changes in the print statements if you know how to or use python3.
+I used python3 but you can use python2.
 
-Python3			- https://www.python.org/download/releases/3.0/
+Python			- https://www.python.org/download/
 BeautifulSoup4	- https://www.crummy.com/software/BeautifulSoup/bs4/doc/
 
 Usage
 ====
 <pre>python3 saavn_downloader.py</pre>
-
+for python 2
+<pre>python saavn_downloader.py</pre>
 When asked for the song url enter the url of the album from the saavn website eg. http://www.saavn.com/s/album/blah-blah
 
 
