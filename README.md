@@ -66,11 +66,8 @@ You need Python and BeautifulSoup4 installed for the script to work.
 
 I used python3 but you can use python2.
 
-<<<<<<< HEAD
 Python			- https://www.python.org/download/
-=======
 Python3			- https://www.python.org/download/releases/3.0/<br>
->>>>>>> refs/remotes/arunKumarNOP/master
 BeautifulSoup4	- https://www.crummy.com/software/BeautifulSoup/bs4/doc/
 
 Usage
