@@ -29,13 +29,48 @@ I think it uses NDK library for performance boost but i couldn't extract more in
 
 So a user with a Pro account can simply delete the NDK library from the apk, reinstall it and then download songs. Then he can decrypt all those downloaded songs and play it in any of his favourite player.
 
+### Update
+
+In past few days i have been learing ARM reversing and thought to look inside DRM protection of Saavn. I must say it was not that hard to find the encryption algorithm (AES-256-CBC) and its key and IV.
+
+The ndk library encrypts at max 1 MB from the starting of the file. It also saves the length of encrypted data at the starting of the encrypted file to refer to while decrypting.
+
+This structure explains it better.
+<pre>
+struct encrypted_file
+{
+	int32 lenOfEncryptedPart;
+	char encryptedPart[lenOfEncryptedPart];
+	char restUnencryptedPart[totalLengthOfFile-lenOfEncryptedPart];
+};
+</pre>
+
+In most (all cases) cases the size of the song is greater than 1 MB so i skipped this header and dumped 1 MB starting from 4th offset, decrypt it with AES using openssl and concat it with rest of the un-encrypted part to get DRM free song.
+
+See the *[saavn_drm_remover.sh](saavn_drm_remover.sh)* script for the commands. It uses *openssl* and *dd* which is present in all linux distro by default, if its not then google it for installalation instructions.
+
+##### Usage
+First make it executable by using <pre>chmod a+x saavn_drm_remover.sh</pre> then run
+
+<pre>
+saavn_drm_remover.sh filename
+</pre>
+
+It will produce decrypted file with *dec_\<filename\>*
+
+Lesson learned - Don't hide secrets even in native library.
+
 Prerequisite
 ====
 You need Python and BeautifulSoup4 installed for the script to work.
 
 I used python3 but you can use python2.
 
+<<<<<<< HEAD
 Python			- https://www.python.org/download/
+=======
+Python3			- https://www.python.org/download/releases/3.0/<br>
+>>>>>>> refs/remotes/arunKumarNOP/master
 BeautifulSoup4	- https://www.crummy.com/software/BeautifulSoup/bs4/doc/
 
 Usage
