@@ -6,6 +6,7 @@ import os
 import requests
 from json import JSONDecoder
 import base64
+import wget
 
 from pyDes import *
 
@@ -61,3 +62,4 @@ for song in songs_json:
     dec_url = base_url + dec_url.replace('mp3:audios','') + '.mp3'
     print(dec_url,'\n')
     linksFile.write("<a href=\"" + dec_url + "\">" + obj['title'] + "<a> <br>")
+    wget.download(dec_url, obj['title']+".mp3")
