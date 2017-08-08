@@ -1,5 +1,4 @@
-#!/usr/bin/python3
-# coded by Arun Kumar Shreevastave - 25 Oct 2016
+#!/usr/bin/python
 
 from bs4 import BeautifulSoup
 import os
@@ -36,30 +35,45 @@ json_decoder = JSONDecoder()
 # and its pretty insecure to decrypt urls to the mp3 at the client side
 # these operations should be performed at the server side.
 des_cipher = des(b"38346591", ECB, b"\0\0\0\0\0\0\0\0" , pad=None, padmode=PAD_PKCS5)
+    
+
+def downloader_saavn(input_url):
+    try:
+        res = requests.get(input_url, proxies=proxies, headers=headers)
+    except Exception as e:
+        print('Error accessing website error: '+e)
+        sys.exit()
 
 
-input_url = input('Enter the song url:').strip()
+    soup = BeautifulSoup(res.text,"lxml")
 
-try:
-    res = requests.get(input_url, proxies=proxies, headers=headers)
-except Exception as e:
-    print('Error accessing website error: '+e)
-    sys.exit()
+    # Encrypted url to the mp3 are stored in the webpage
+    songs_json = soup.find_all('div',{'class':'hide song-json'})
 
+    linksFile = open('links.html','a+')
 
-soup = BeautifulSoup(res.text,"lxml")
+    for song in songs_json:
+        obj = json_decoder.decode(song.text)
+        print(obj['album'],'-',obj['title'])
+        enc_url = base64.b64decode(obj['url'].strip())
+        dec_url = des_cipher.decrypt(enc_url,padmode=PAD_PKCS5).decode('utf-8')
+        dec_url = base_url + dec_url.replace('mp3:audios','') + '.mp3'
+        print(dec_url,'\n')
+        linksFile.write("<a href=\"" + dec_url + "\">" + obj['title'] + "<a> <br>")
+        wget.download(dec_url, obj['title']+".mp3")
 
-# Encrypted url to the mp3 are stored in the webpage
-songs_json = soup.find_all('div',{'class':'hide song-json'})
+if __name__ == "__main__":
+    input_url = input('Enter the song url:').strip()
 
-linksFile = open('links.html','a+')
+    if 'search' in input_url:
+        try:
+            res = requests.get(input_url, proxies=proxies, headers=headers)
+        except Exception as e:
+            print('Error accessing website error: '+e)
+            sys.exit()
 
-for song in songs_json:
-    obj = json_decoder.decode(song.text)
-    print(obj['album'],'-',obj['title'])
-    enc_url = base64.b64decode(obj['url'].strip())
-    dec_url = des_cipher.decrypt(enc_url,padmode=PAD_PKCS5).decode('utf-8')
-    dec_url = base_url + dec_url.replace('mp3:audios','') + '.mp3'
-    print(dec_url,'\n')
-    linksFile.write("<a href=\"" + dec_url + "\">" + obj['title'] + "<a> <br>")
-    wget.download(dec_url, obj['title']+".mp3")
+        soup = BeautifulSoup(res.text,"lxml")
+        for a in soup.select('span.title a[href]'):
+            downloader_saavn(a['href'].strip())
+    else:
+        downloader_saavn(input_url)
