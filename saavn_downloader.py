@@ -63,8 +63,7 @@ def downloader_saavn(input_url):
         if os.path.exists(fileExistsName):
             continue
         else:
-            #wget.download(dec_url, obj['title']+".mp3")
-            pass
+            wget.download(dec_url, obj['title']+".mp3")
 
     for fileName in os.listdir(os.getcwd()):
         if fileName.endswith(".mp3"):
