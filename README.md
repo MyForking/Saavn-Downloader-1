@@ -1,5 +1,8 @@
 Saavn Downloader
 ====
+
+[![asciicast](https://asciinema.org/a/E8q4ZZAqN7J3FjSPVj5dBs8kH.png)](https://asciinema.org/a/E8q4ZZAqN7J3FjSPVj5dBs8kH)
+
 This reasearch is done by Arun, a fellow github user.
 i have just utilized to make a downloader.
 
