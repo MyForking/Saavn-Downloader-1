@@ -1,5 +1,8 @@
 Saavn Downloader
 ====
+This reasearch is done by Arun, a fellow github user.
+i have just utilized to make a downloader.
+
 This is a downloader which i coded when i discovered a loophole in Saavn Android App (a popular music streaming app) which can be used to download any music from Saavn in mp3 format, AFAIK only Pro users can download songs but that are also DRM protected (i will tell you how broken that is), but with this any user can bypass all these protection and get DRM free music on their disk.
 
 I sent a total of 3 mails i suppose to their only email id that i could possibly find from their website and app - "feedback@saavn.com", along with the PoC but in return i got no reply, which shows that they don't check their mails, God bless those customers, or they don't believe me.
