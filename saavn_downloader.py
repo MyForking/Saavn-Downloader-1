@@ -6,6 +6,7 @@ import requests
 from json import JSONDecoder
 import base64
 import wget
+import errno
 
 from pyDes import *
 
@@ -36,6 +37,13 @@ json_decoder = JSONDecoder()
 # these operations should be performed at the server side.
 des_cipher = des(b"38346591", ECB, b"\0\0\0\0\0\0\0\0" , pad=None, padmode=PAD_PKCS5)
     
+def createDownloadsFolder():
+	path = os.path.join(os.getcwd(), "downloads")
+	try:
+		os.makedirs(path)
+	except OSError as exception:
+		if exception.errno != errno.EEXIST:
+			raise
 
 def downloader_saavn(input_url):
     try:
@@ -49,7 +57,7 @@ def downloader_saavn(input_url):
 
     # Encrypted url to the mp3 are stored in the webpage
     songs_json = soup.find_all('div',{'class':'hide song-json'})
-
+    createDownloadsFolder()
     currentDirectory = os.path.join(os.getcwd(), "downloads")
     
     for song in songs_json:
